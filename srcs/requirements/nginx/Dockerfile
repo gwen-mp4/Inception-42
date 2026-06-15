@@ -1,6 +1,9 @@
 FROM alpine:3.24
 
-RUN apk update && apk add nginx && apk add openssl
+RUN apk update && apk upgrade && apk add --no-cache \
+    sudo \
+    nginx \
+    openssl
 
 RUN mkdir -p /run/nginx
 
@@ -9,9 +12,7 @@ RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes\
     -out /etc/nginx/ssl/gwen.crt \
     -subj "/C=FR/ST=IDF/L=Paris/O=42 School/OU=gwen/CN=gwen"
 
-WORKDIR /etc/nginx
-
-COPY /conf/nginx.conf .
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443
 
