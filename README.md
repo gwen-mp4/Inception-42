@@ -3,6 +3,7 @@ Ressources:
 [NGINX Beginner guide] https://nginx.org/en/docs/beginners_guide.html
 [NGINX HTTPS Configuration] https://nginx.org/en/docs/http/configuring_https_servers.html
 [WordPress Installation] https://www.dreamhost.com/blog/guide-to-wp-cli/#:~:text=The%20WP%2DCLI%20is%20a,faster%20using%20the%20WP%2DCLI.
+[WordPress Script] https://developer.wordpress.org/cli/commands/
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -53,3 +54,6 @@ LOG:
 *15/06*
 -Created Dockerfile and www.conf for WordPress
 -TO-DO: wordpress.sh
+*16/06*
+-Wrote _wordpress.sh_, it works
+-TO-DO: write a .yaml to connect both container and test if web page works
