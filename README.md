@@ -56,4 +56,4 @@ LOG:
 -TO-DO: wordpress.sh
 *16/06*
 -Wrote _wordpress.sh_, it works
--TO-DO: write a .yaml to connect both container and test if web page works
+-TO-DO: Dockerfile for mariadb
