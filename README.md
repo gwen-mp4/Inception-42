@@ -4,6 +4,8 @@ Ressources:
 [NGINX HTTPS Configuration] https://nginx.org/en/docs/http/configuring_https_servers.html
 [WordPress Installation] https://www.dreamhost.com/blog/guide-to-wp-cli/#:~:text=The%20WP%2DCLI%20is%20a,faster%20using%20the%20WP%2DCLI.
 [WordPress Script] https://developer.wordpress.org/cli/commands/
+[MariaDB Installation] https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db
+[MariaDB Script] https://github.com/MariaDB/server/blob/main/scripts/mysql_secure_installation.sh
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -57,3 +59,6 @@ LOG:
 *16/06*
 -Wrote _wordpress.sh_, it works
 -TO-DO: Dockerfile for mariadb
+*18/06*:
+-MariaDB dockerfile, config and .sh done, all work
+TO-DO: Connect all containers (docker-compose.yaml)
