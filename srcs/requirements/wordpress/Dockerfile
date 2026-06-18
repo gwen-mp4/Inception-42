@@ -32,13 +32,11 @@ RUN mkdir -p /run/php
 # Allocating more space otherwise there'll no  enough space
 RUN echo "memory_limit = 256M" >> /etc/php85/php.ini
 
-# Copy script and execute it locally on the PC
-COPY ./tools/wordpress.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/wordpress.sh
-ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
-
 WORKDIR /var/www/wordpress
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm85", "-F"]
+# Copy script and execute it locally on the PC
+COPY ./tools/wordpress.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/wordpress.sh
+ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
