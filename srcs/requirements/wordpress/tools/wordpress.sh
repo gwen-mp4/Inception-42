@@ -13,7 +13,7 @@ if [ ! -f ./wp-config.php ]; then
         --dbname=$MYSQL_DATABASE \
         --dbuser=$MYSQL_USER \
         --dbpass=$MYSQL_PASSWORD \
-        --dbhost=mariadb
+        --dbhost=$MYSQL_HOSTNAME
     # Final installation
     wp core install \
         --path=/var/www/wordpress \

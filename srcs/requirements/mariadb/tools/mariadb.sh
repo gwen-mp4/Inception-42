@@ -3,7 +3,7 @@
 # Initializing the database (in /var/lib so it persists between each boot) if it doesn't exist
 # And run the user as the daemon mysql
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+    mariadb_install_db --user=mysql --datadir=/var/lib/mysql
     
     # Execute temporarily the server (lighter) to configurate the database
     # Using --bootstrap will allow to execute SQL scripts before any privilege or system tables exist

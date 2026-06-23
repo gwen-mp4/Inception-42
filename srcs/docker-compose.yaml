@@ -1,0 +1,54 @@
+services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - 443:443
+    # Using bind mount for speed (no need to docker build each time we change the config)
+    # And named volumes for data sharing
+    volumes:
+      - type: bind
+        source: ./requirements/nginx/conf/nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+      - wordpress:/var/www/wordpress:ro
+    restart: always
+    depends_on:
+      - wordpress
+    networks:
+      - oiia-network
+    env_file:
+      - .env
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - oiia-network
+    volumes:
+      - wordpress:/var/www/wordpress
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: always
+    networks:
+      - oiia-network
+
+# Declarations
+volumes:
+  wordpress:
+  mariadb:
+
+# By default, the network's driver is "bridge"
+# Other drivers are: "host", "none", "overlay", "ipvlan" and "macvlan"
+networks:
+  oiia-network:
+    driver: bridge

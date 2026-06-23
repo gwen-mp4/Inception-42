@@ -1,11 +1,13 @@
 Ressources:  
-[Guide Github Inception] https://github.com/vbachele/Inception/tree/main
-[NGINX Beginner guide] https://nginx.org/en/docs/beginners_guide.html
-[NGINX HTTPS Configuration] https://nginx.org/en/docs/http/configuring_https_servers.html
-[WordPress Installation] https://www.dreamhost.com/blog/guide-to-wp-cli/#:~:text=The%20WP%2DCLI%20is%20a,faster%20using%20the%20WP%2DCLI.
-[WordPress Script] https://developer.wordpress.org/cli/commands/
-[MariaDB Installation] https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db
-[MariaDB Script] https://github.com/MariaDB/server/blob/main/scripts/mysql_secure_installation.sh
+Guide Github Inception: https://github.com/vbachele/Inception/tree/main
+NGINX Beginner guide: https://nginx.org/en/docs/beginners_guide.html
+NGINX HTTPS Configuration: https://nginx.org/en/docs/http/configuring_https_servers.html
+WordPress Installation: https://www.dreamhost.com/blog/guide-to-wp-cli/#:~:text=The%20WP%2DCLI%20is%20a,faster%20using%20the%20WP%2DCLI.
+WordPress Script: https://developer.wordpress.org/cli/commands/
+MariaDB Installation: https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db
+MariaDB Script: https://github.com/MariaDB/server/blob/main/scripts/mysql_secure_installation.sh
+Docker-compose: https://docs.docker.com/reference/compose-file/services/
+Docker compose intall: https://docs.docker.com/compose/install/linux/#install-using-the-repository
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -20,6 +22,15 @@ ENTRYPOINT to execute a .sh
 -CTRL+D to leave the container and *docker cp <containerName>:<path> <directory you want>
 After that, you'll find the exact path where the .conf is located, now clean the image and the container
 -*docker rm -f <containerName>* and if you want to remove image, do it
+* Or just read the official Dockerfile
+**If you can't execute the container**
+-You can do this:
+*docker run --rm --entrypoint sh __service-you-want__:latest -c "ls -R /etc/__service-you-want__"*  
+*--rm* delete the container after execution  
+*--entrypoint sh* replace the start command by the shell
+*-c "ls -R /etc/__service-you-want__* list recursively the directory's content
+**If you want to see what's inside the original config file without running a container:**
+*docker run --rm __service-you-want__:latest cat /etc/__service-you-want__/__file-you-want__*
 
 # Docker commands:  
 ## To create a docker image:  
@@ -62,3 +73,6 @@ LOG:
 *18/06*:
 -MariaDB dockerfile, config and .sh done, all work
 TO-DO: Connect all containers (docker-compose.yaml)
+*23/06*:
+-.env file and docker-compose.yaml
+TO-DO: Debug docker compose up
