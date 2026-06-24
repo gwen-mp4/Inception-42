@@ -28,7 +28,7 @@ After that, you'll find the exact path where the .conf is located, now clean the
 *docker run --rm --entrypoint sh __service-you-want__:latest -c "ls -R /etc/__service-you-want__"*  
 *--rm* delete the container after execution  
 *--entrypoint sh* replace the start command by the shell
-*-c "ls -R /etc/__service-you-want__* list recursively the directory's content
+*-c "ls -R /etc/__service-you-want__"* list recursively the directory's content
 **If you want to see what's inside the original config file without running a container:**
 *docker run --rm __service-you-want__:latest cat /etc/__service-you-want__/__file-you-want__*
 
@@ -76,3 +76,6 @@ TO-DO: Connect all containers (docker-compose.yaml)
 *23/06*:
 -.env file and docker-compose.yaml
 TO-DO: Debug docker compose up
+*24/06*:
+Everything seems to work normally
+To-do: Recheck everything (and do dev_doc.md and user_doc.md), do bonuses

@@ -3,25 +3,40 @@
 # Initializing the database (in /var/lib so it persists between each boot) if it doesn't exist
 # And run the user as the daemon mysql
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mariadb_install_db --user=mysql --datadir=/var/lib/mysql
-    
-    # Execute temporarily the server (lighter) to configurate the database
-    # Using --bootstrap will allow to execute SQL scripts before any privilege or system tables exist
-    # Writing SQL instead of executing mysql_secure_installation allows to avoid bugs and root usage
-    mariadbd --user=mysql --bootstrap << EOF
-USE mysql;
-FLUSH PRIVILEGES;
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DROP DATABASE IF EXISTS test;
-CREATE DATABASE IF NOT EXISTS ${DB_NAME};
-CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
+    echo "Initializing MariaDB database..."
+    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+
+    # Execute temporarily the server to configure the database
+    mariadbd --user=mysql --datadir=/var/lib/mysql & pid="$!"
+    until mariadb-admin ping --silent; do
+			echo "Waiting for MariaDB to start..."
+			sleep 2
+	done
+
+	echo "Configurating database..."
+    mariadb -u root <<EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+DELETE FROM mysql.user WHERE User='root' AND Host='%';
+CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'localhost';
 FLUSH PRIVILEGES;
 EOF
+
+# Stop the temporary MariaDB instance
+kill "$pid"
+wait "$pid"
+
 else
     echo "Database already exists"
 fi
 
-exec mariadbd --user=mysql
+# Delete the lock file if it exists and if none of MariaDB instance is active
+if [ -f /var/lib/mysql/aria_log_control ]; then
+    rm -f /var/lib/mysql/aria_log_control
+fi
+
+echo "Starting MariaDB..."
+exec mariadbd --user=mysql --datadir=/var/lib/mysql

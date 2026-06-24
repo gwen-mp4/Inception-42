@@ -16,7 +16,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php85-openssl \
     php85-phar \
 	redis \
-	php85-redis
+	php85-redis \
+    mariadb-client
 
 RUN rm -f /usr/local/bin/wp
 
@@ -32,7 +33,7 @@ RUN mkdir -p /run/php
 # Allocating more space otherwise there'll no  enough space
 RUN echo "memory_limit = 256M" >> /etc/php85/php.ini
 
-WORKDIR /var/www/wordpress
+WORKDIR /var/www/html
 
 EXPOSE 9000
 

@@ -13,7 +13,7 @@ RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes\
     -out /etc/nginx/ssl/gwen.crt \
     -subj "/C=FR/ST=IDF/L=Paris/O=42 School/OU=gwen/CN=gwen"
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443
 

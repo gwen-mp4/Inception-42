@@ -4,14 +4,8 @@ services:
     build: ./requirements/nginx
     ports:
       - 443:443
-    # Using bind mount for speed (no need to docker build each time we change the config)
-    # And named volumes for data sharing
     volumes:
-      - type: bind
-        source: ./requirements/nginx/conf/nginx.conf
-        target: /etc/nginx/conf.d/default.conf
-        read_only: true
-      - wordpress:/var/www/wordpress:ro
+      - wordpress:/var/www/html:ro
     restart: always
     depends_on:
       - wordpress
@@ -30,7 +24,7 @@ services:
     networks:
       - oiia-network
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/html
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
