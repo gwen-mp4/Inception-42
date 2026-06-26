@@ -2,6 +2,7 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
+    image: nginx:latest
     ports:
       - 443:443
     volumes:
@@ -16,6 +17,7 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
+    image: wordpress:latest
     depends_on:
       - mariadb
     restart: always
@@ -28,6 +30,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
+    image: mariadb:latest
     env_file:
       - .env
     volumes:
@@ -39,7 +42,17 @@ services:
 # Declarations
 volumes:
   wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gwen/data/wordpress
+      o: bind
   mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gwen/data/mariadb
+      o: bind
 
 # By default, the network's driver is "bridge"
 # Other drivers are: "host", "none", "overlay", "ipvlan" and "macvlan"

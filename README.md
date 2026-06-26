@@ -79,3 +79,6 @@ TO-DO: Debug docker compose up
 *24/06*:
 Everything seems to work normally
 To-do: Recheck everything (and do dev_doc.md and user_doc.md), do bonuses
+*26/06*:
+Fixed things
+To-do: do bonuses
