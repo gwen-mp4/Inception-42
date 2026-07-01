@@ -48,4 +48,7 @@ status:
 	@echo "$(CYAN)Checking status... $(RES)"
 	@docker compose -f srcs/docker-compose.yaml ps
 
-.PHONY: all up re down clean status
+logs:
+	@docker compose -f srcs/docker-compose.yaml logs
+
+.PHONY: all up re down clean status logs

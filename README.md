@@ -8,6 +8,7 @@ MariaDB Installation: https://mariadb.com/docs/server/clients-and-utilities/depl
 MariaDB Script: https://github.com/MariaDB/server/blob/main/scripts/mysql_secure_installation.sh
 Docker-compose: https://docs.docker.com/reference/compose-file/services/
 Docker compose intall: https://docs.docker.com/compose/install/linux/#install-using-the-repository
+Redis installation: https://dev.gaelbillon.com/installer-et-configurer-redis-pour-wordpress-en-5-minutes/
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -82,3 +83,5 @@ To-do: Recheck everything (and do dev_doc.md and user_doc.md), do bonuses
 *26/06*:
 Fixed things
 To-do: do bonuses
+*01/07*:
+-Added redis, fixed some issues, no problem for now

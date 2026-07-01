@@ -5,6 +5,15 @@ RUN apk update && apk upgrade && apk add --no-cache \
     curl \
     bash \
     php85 \
+    php85-curl \
+    php85-dom \
+    php85-exif \
+    php85-fileinfo \
+    php85-intl \
+    php85-xml \
+    php85-zip \
+    php85-tokenizer \
+    php85-ctype \
     php85-cgi \
     php85-mysqli \
     php85-fpm \
@@ -15,7 +24,6 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php85-json \
     php85-openssl \
     php85-phar \
-	redis \
 	php85-redis \
     mariadb-client
 
