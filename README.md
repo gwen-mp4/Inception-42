@@ -9,6 +9,7 @@ MariaDB Script: https://github.com/MariaDB/server/blob/main/scripts/mysql_secure
 Docker-compose: https://docs.docker.com/reference/compose-file/services/
 Docker compose intall: https://docs.docker.com/compose/install/linux/#install-using-the-repository
 Redis installation: https://dev.gaelbillon.com/installer-et-configurer-redis-pour-wordpress-en-5-minutes/
+FTP-server (vsftpd): https://linux.developpez.com/vsftpd/
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -62,6 +63,17 @@ After that, you'll find the exact path where the .conf is located, now clean the
 ## To execute all containers (.yaml)
 *docker-compose up -d --build*
 
+* To check redis cache
+-docker exec -it redis redis-cli
+-MONITOR
+* To test if vsftpd works
+-lftp -u gwen,123 localhost
+-ls (to display /var/www/html)
+-debug 3 (verbose)
+-put /etc/hostname -o test-ftp.php (copy the hostname of the website to the file)
+-ls
+-get test-ftp.php -o /tmp/test-recu.php (download the file to /tmp)
+
 LOG:
 *10/06*
 -Created Dockerfile for nginx
@@ -85,3 +97,5 @@ Fixed things
 To-do: do bonuses
 *01/07*:
 -Added redis, fixed some issues, no problem for now
+*03/07*:
+-Added ftp server vsftpd, no issues for now

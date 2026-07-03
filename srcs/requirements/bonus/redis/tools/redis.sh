@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ ! -f "/etc/redis.conf.bak" ]; then
     # Create a backup copy of the original

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -x #Debug "docker logs <containerName>"
 
 until mariadb-admin ping \
@@ -45,7 +45,6 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
     wp config set WP_REDIS_CLIENT phpredis --allow-root
     wp plugin install redis-cache --activate --allow-root
     wp redis enable --allow-root
-    wp redis status --allow-root
 else
     echo "WordPress is already installed"
 fi

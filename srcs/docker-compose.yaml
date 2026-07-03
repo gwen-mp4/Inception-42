@@ -2,7 +2,6 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
-    image: nginx:latest
     ports:
       - 443:443
     volumes:
@@ -17,7 +16,6 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
-    image: wordpress:latest
     depends_on:
       - mariadb
     restart: always
@@ -30,7 +28,6 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    image: mariadb:latest
     env_file:
       - .env
     volumes:
@@ -41,7 +38,6 @@ services:
   redis:
     container_name: redis
     build: ./requirements/bonus/redis
-    image: redis:alpine
     depends_on:
       - wordpress
     restart: always
@@ -49,6 +45,22 @@ services:
       - 6379:6379
     volumes:
       - wordpress:/var/www/html
+    networks:
+      - oiia-network
+  vsftpd:
+    container_name: vsftpd
+    build: ./requirements/bonus/ftp
+    depends_on:
+      - wordpress
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - wordpress:/var/www/html
+    environment:
+      FTP_USER: ${FTP_USER}
+      FTP_PASS: ${FTP_PASS}
+    restart: always
     networks:
       - oiia-network
 
