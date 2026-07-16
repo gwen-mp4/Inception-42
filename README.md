@@ -99,3 +99,5 @@ To-do: do bonuses
 -Added redis, fixed some issues, no problem for now
 *03/07*:
 -Added ftp server vsftpd, no issues for now
+*16/07*
+-Added static page, next, adminer

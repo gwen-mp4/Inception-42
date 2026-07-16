@@ -1,0 +1,34 @@
+body {
+    margin: auto;
+    height: 100vh;
+    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    color: white;
+}
+
+.container {
+    text-align: center;
+}
+
+.cat-image {
+    width: 828px;
+    height: 462px;
+    border-radius: 30px; /* Bordure très arrondie */
+    border: 5px solid white;
+    object-fit: cover;
+}
+
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    margin-top: 20px;
+}
