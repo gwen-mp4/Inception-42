@@ -68,8 +68,14 @@ services:
     container_name: static_page
     build: ./requirements/bonus/static_page
     restart: always
-    ports:
-      - "8080:8080"
+    networks:
+      - oiia-network
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    restart: always
+    depends_on:
+      - mariadb
     networks:
       - oiia-network
 

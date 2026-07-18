@@ -49,5 +49,8 @@ else
     echo "WordPress is already installed"
 fi
 
+echo "Fixing permissions for www-data..."
+chown -R www-data:www-data /var/www/html
+
 echo "Starting PHP-FPM..."
 exec /usr/sbin/php-fpm85 -F

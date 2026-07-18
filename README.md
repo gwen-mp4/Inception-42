@@ -10,6 +10,7 @@ Docker-compose: https://docs.docker.com/reference/compose-file/services/
 Docker compose intall: https://docs.docker.com/compose/install/linux/#install-using-the-repository
 Redis installation: https://dev.gaelbillon.com/installer-et-configurer-redis-pour-wordpress-en-5-minutes/
 FTP-server (vsftpd): https://linux.developpez.com/vsftpd/
+Adminer for nginx.conf: https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
 
 ## Dockerfile
 CMD to executing a command (command by default)
@@ -101,3 +102,5 @@ To-do: do bonuses
 -Added ftp server vsftpd, no issues for now
 *16/07*
 -Added static page, next, adminer
+*18/07*
+-Added Adminer, next, Cadvisor and then revise

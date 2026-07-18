@@ -27,6 +27,9 @@ RUN apk update && apk upgrade && apk add --no-cache \
 	php85-redis \
     mariadb-client
 
+RUN (addgroup -S www-data || true) && \
+    (adduser -S -D -H -G www-data www-data || true)
+
 RUN rm -f /usr/local/bin/wp
 
 # Installing wp_cli to do communicate with WordPress
