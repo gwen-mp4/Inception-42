@@ -1,106 +1,169 @@
-Ressources:  
-Guide Github Inception: https://github.com/vbachele/Inception/tree/main
-NGINX Beginner guide: https://nginx.org/en/docs/beginners_guide.html
-NGINX HTTPS Configuration: https://nginx.org/en/docs/http/configuring_https_servers.html
-WordPress Installation: https://www.dreamhost.com/blog/guide-to-wp-cli/#:~:text=The%20WP%2DCLI%20is%20a,faster%20using%20the%20WP%2DCLI.
-WordPress Script: https://developer.wordpress.org/cli/commands/
-MariaDB Installation: https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db
-MariaDB Script: https://github.com/MariaDB/server/blob/main/scripts/mysql_secure_installation.sh
-Docker-compose: https://docs.docker.com/reference/compose-file/services/
-Docker compose intall: https://docs.docker.com/compose/install/linux/#install-using-the-repository
-Redis installation: https://dev.gaelbillon.com/installer-et-configurer-redis-pour-wordpress-en-5-minutes/
-FTP-server (vsftpd): https://linux.developpez.com/vsftpd/
-Adminer for nginx.conf: https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
+*This project has been created as part of the 42 curriculum by gwen*
 
-## Dockerfile
-CMD to executing a command (command by default)
-ENTRYPOINT to execute a .sh
-**To find the path of the .conf, do this:**
--Create a rudimentary Dockerfile: FROM, RUN (install what you need) and CMD
--Write *CMD ["tail", "-f", "/dev/null"]*
--*docker build [-t <imageName>] .*
--*docker run -d --name <containerName> <imageName>*
--*docker exec -it <containerName> sh*
--_find /etc -name "*.conf"_
--CTRL+D to leave the container and *docker cp <containerName>:<path> <directory you want>
-After that, you'll find the exact path where the .conf is located, now clean the image and the container
--*docker rm -f <containerName>* and if you want to remove image, do it
-* Or just read the official Dockerfile
-**If you can't execute the container**
--You can do this:
-*docker run --rm --entrypoint sh __service-you-want__:latest -c "ls -R /etc/__service-you-want__"*  
-*--rm* delete the container after execution  
-*--entrypoint sh* replace the start command by the shell
-*-c "ls -R /etc/__service-you-want__"* list recursively the directory's content
-**If you want to see what's inside the original config file without running a container:**
-*docker run --rm __service-you-want__:latest cat /etc/__service-you-want__/__file-you-want__*
+# Inception Project
 
-# Docker commands:  
-## To create a docker image:  
-*docker build [-t <imageName>] .* (-t for name and don't forget the dot)
-## To run a container:
-*docker run -d --name <containerName> <imageName>*
-## To enter a container:
-*docker exec -it <containerName> sh*
-## To stop a container:
-*docker stop <containerName>*
-## To remove a stopped container:
-*docker rm <containerName>*
-## To remove an image:
-*docker image rm <imageName>*
-**Prune**
-## To remove all stopped containers:
-*docker container prune*
-## To remove all dangling images:
-*docker image prune* (-a to include images that aren't used by existing containers)
-## To remove networks that aren't used by containers:
-*docker network prune*
-## To remove everything (images, containers...):
-*docker system prune* (-a for all kind of images)
-## To see all images:
-*docker image ls* (-a for stopped)
-## To see all running container:
-*docker ps* (-a including stopped)
-## To execute all containers (.yaml)
-*docker-compose up -d --build*
+## Description
 
-* To check redis cache
--docker exec -it redis redis-cli
--MONITOR
-* To test if vsftpd works
--lftp -u gwen,123 localhost
--ls (to display /var/www/html)
--debug 3 (verbose)
--put /etc/hostname -o test-ftp.php (copy the hostname of the website to the file)
--ls
--get test-ftp.php -o /tmp/test-recu.php (download the file to /tmp)
+This project builds a complete web stack using Docker and Docker Compose. Its goal is to host a WordPress site behind Nginx with HTTPS, while also providing a database, cache, FTP access, and administration tools in a containerized environment.
 
-LOG:
-*10/06*
--Created Dockerfile for nginx
-*15/06*
--Created Dockerfile and www.conf for WordPress
--TO-DO: wordpress.sh
-*16/06*
--Wrote _wordpress.sh_, it works
--TO-DO: Dockerfile for mariadb
-*18/06*:
--MariaDB dockerfile, config and .sh done, all work
-TO-DO: Connect all containers (docker-compose.yaml)
-*23/06*:
--.env file and docker-compose.yaml
-TO-DO: Debug docker compose up
-*24/06*:
-Everything seems to work normally
-To-do: Recheck everything (and do dev_doc.md and user_doc.md), do bonuses
-*26/06*:
-Fixed things
-To-do: do bonuses
-*01/07*:
--Added redis, fixed some issues, no problem for now
-*03/07*:
--Added ftp server vsftpd, no issues for now
-*16/07*
--Added static page, next, adminer
-*18/07*
--Added Adminer, next, Cadvisor and then revise
+The stack is composed of several services that work together:
+
+- Nginx: serves the site over HTTPS and routes traffic to WordPress and the bonus services.
+- WordPress: runs the web application and its PHP-FPM process.
+- MariaDB: stores the WordPress database.
+- Redis: improves performance by caching WordPress content.
+- vsftpd: provides FTP access to the website files.
+- Adminer: offers a lightweight database administration interface.
+- cAdvisor: exposes container metrics and resource usage.
+
+## Project description
+
+This repository follows the 42 Inception project approach: each component is containerized and orchestrated through Docker Compose instead of being installed directly on the host. The project includes Dockerfiles and shell scripts under the srcs/requirements tree, as well as configuration files for Nginx, MariaDB, WordPress, FTP, Redis, Adminer, and cAdvisor.
+
+### Why Docker is used here
+
+Docker is used to isolate each service, simplify deployment, and make the environment reproducible. Each service runs in its own container with its own dependencies, which makes the stack easier to start, stop, rebuild, and debug.
+
+### Design choices
+
+- The services are defined in srcs/docker-compose.yaml.
+- Environment variables are injected through srcs/.env for secrets and configuration values.
+- Host data is persisted using bind mounts so the website files and database remain available across container restarts and rebuilds.
+- The root Makefile provides simple commands to start and manage the whole stack.
+
+### Comparison of key concepts
+
+| Topic | Choice used here | Why |
+| --- | --- | --- |
+| Virtual Machines vs Docker | Docker | Docker is lighter, faster to start, and more suited for containerized micro-services. |
+| Secrets vs Environment Variables | Environment variables | The project uses values such as database passwords and FTP credentials from srcs/.env for convenience during development and local deployment. |
+| Docker Network vs Host Network | Docker network | Containers communicate through an internal bridge network, which is safer and cleaner than exposing everything directly on the host. |
+| Docker Volumes vs Bind Mounts | Bind mounts | The project uses bind mounts to keep data on the host filesystem at fixed paths for persistence and easy inspection. |
+
+## Instructions
+
+### Prerequisites
+
+Make sure the following are installed on the host:
+
+- Docker Engine
+- Docker Compose v2
+- make
+- sudo access for the project’s directory setup and cleanup steps
+
+If you want to access the site locally using the configured domain, add the following entry to /etc/hosts:
+
+- 127.0.0.1 gwen.42.fr
+
+### Configuration
+
+The main environment variables are stored in srcs/.env.
+
+Important values include:
+
+- MariaDB credentials: MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD
+- WordPress credentials: WP_ADMIN_USER, WP_ADMIN_PASSWORD, WP_ADMIN_EMAIL
+- FTP credentials: FTP_USER, FTP_PASS
+
+These values are consumed by the services at startup.
+
+### Start the project
+
+From the repository root, run:
+
+- make
+
+This creates the required host directories and starts all containers.
+
+### Stop the project
+
+- make down
+
+### Check the project status
+
+- make status
+
+### View logs
+
+- make logs
+
+### Clean the environment
+
+- make clean: remove containers and related resources
+- make fclean: fully reset the stack and remove persisted data directories
+
+## Structure of the repository
+
+- srcs/docker-compose.yaml: container orchestration for the whole stack
+- srcs/.env: runtime configuration and credentials
+- srcs/requirements/nginx/: Nginx configuration and TLS setup
+- srcs/requirements/wordpress/: WordPress installation and PHP-FPM setup
+- srcs/requirements/mariadb/: MariaDB initialization and database setup
+- srcs/requirements/bonus/redis/: Redis integration for WordPress
+- srcs/requirements/bonus/ftp/: FTP service configuration
+- srcs/requirements/bonus/adminer/: Adminer setup
+- srcs/requirements/bonus/cadvisor/: Metrics dashboard setup
+
+## Usage
+
+Once the stack is running, these URLs are available:
+
+- Main website: https://gwen.42.fr/
+- WordPress admin panel: https://gwen.42.fr/wp-admin/
+- Adminer: https://gwen.42.fr/adminer/
+- cAdvisor: https://gwen.42.fr/cadvisor/
+- Static page: https://gwen.42.fr/static/
+
+## Service verification and debug commands
+
+The following commands help confirm that the services are working correctly.
+
+### 1. Check the containers
+
+- docker compose -f srcs/docker-compose.yaml ps
+
+### 2. Check the website and reverse proxy
+
+- curl -k -I https://gwen.42.fr/
+- curl -k -I https://gwen.42.fr/adminer/
+- curl -k -I https://gwen.42.fr/cadvisor/
+
+### 3. Check Redis
+
+- docker exec -it redis redis-cli
+- MONITOR
+
+The Redis container should accept the connection and show commands being processed.
+
+### 4. Check FTP
+
+- lftp -u gwen,123 localhost
+- ls
+- debug 3
+- put /etc/hostname -o test-ftp.php
+- ls
+- get test-ftp.php -o /tmp/test-recu.php
+
+These commands verify that the FTP server can list the web root and upload/download files successfully.
+
+### 5. Check WordPress and the database
+
+- docker exec -it wordpress sh
+- wp --info
+- docker exec -it mariadb sh
+
+## Resources
+
+Classic references used while building this project:
+
+- Docker Compose documentation: https://docs.docker.com/compose/
+- Nginx documentation: https://nginx.org/en/docs/
+- WordPress CLI documentation: https://developer.wordpress.org/cli/
+- MariaDB documentation: https://mariadb.com/docs/
+- Redis documentation: https://redis.io/docs/
+- vsftpd documentation: https://linux.developpez.com/vsftpd/
+- cAdvisor documentation: https://prometheus.io/docs/guides/cadvisor/
+
+### Use of AI
+
+AI was used only as a support tool when needed, mainly to help understand some technical concepts, review container configuration, debug specific issues during the setup of the stack and writting documentation (and reviewed by human). It was not used as a substitute for the actual implementation or validation of the project.
