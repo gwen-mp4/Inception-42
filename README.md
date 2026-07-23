@@ -145,12 +145,22 @@ The Redis container should accept the connection and show commands being process
 - get test-ftp.php -o /tmp/test-recu.php
 
 These commands verify that the FTP server can list the web root and upload/download files successfully.
+If changing left side port, add *-p __port-number__*, if it's the right one, you have to change listen_port in vsftpd.conf
 
 ### 5. Check WordPress and the database
 
 - docker exec -it wordpress sh
 - wp --info
 - docker exec -it mariadb sh
+- mariadb -u *user* -p*password* wordpress (there's no space between -p and password)  
+Example of SQL  
+* SHOW tables;  
+* SELECT user_login, user_email FROM wp_users;  
+* SELECT post_title, post_status, post_date FROM wp_posts WHERE post_type = 'post';  
+* SELECT option_name, option_value FROM wp_options WHERE option_name IN ('siteurl', 'home', 'blogname');  
+* EXIT;  
+
+If changing port, do *"curl -Ik https://localhost:__port-number__* if the changed port is the left side, otherwise, have to change the config too.
 
 ## Resources
 
