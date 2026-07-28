@@ -12,30 +12,36 @@ services:
       - wordpress
     networks:
       - oiia-network
-    env_file:
-      - .env
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
     depends_on:
       - mariadb
     restart: always
-    env_file:
-      - .env
     networks:
       - oiia-network
     volumes:
       - wordpress:/var/www/html
+    env_file:
+      - .env
+    secrets:
+      - wp_admin_password
+      - wp_admin_user
+      - mariadb_user_password
+
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    env_file:
-      - .env
     volumes:
       - mariadb:/var/lib/mysql
     restart: always
     networks:
       - oiia-network
+    env_file:
+      - .env
+    secrets:
+      - mariadb_root_password
+      - mariadb_user_password
   redis:
     container_name: redis
     build: ./requirements/bonus/redis
@@ -58,12 +64,13 @@ services:
       - "21100-21110:21100-21110"
     volumes:
       - wordpress:/var/www/html
-    environment:
-      FTP_USER: ${FTP_USER}
-      FTP_PASS: ${FTP_PASS}
+    env_file:
+      - .env
     restart: always
     networks:
       - oiia-network
+    secrets:
+      - ftp_password
   static_page:
     container_name: static_page
     build: ./requirements/bonus/static_page
@@ -112,3 +119,15 @@ volumes:
 networks:
   oiia-network:
     driver: bridge
+
+secrets:
+  mariadb_root_password:
+    file: ../.secrets/db_root_password.txt
+  mariadb_user_password:
+    file: ../.secrets/db_password.txt
+  ftp_password:
+    file: ../.secrets/ftp_password.txt
+  wp_admin_password:
+    file: ../.secrets/wp_admin_password.txt
+  wp_admin_user:
+    file: ../.secrets/wp_admin_user.txt

@@ -127,15 +127,16 @@ The Redis container should accept the connection and show commands being process
 
 ### 4. Check FTP
 
-- lftp -u gwen,123 localhost
-- ls
-- debug 3
-- put /etc/hostname -o test-ftp.php
-- ls
-- get test-ftp.php -o /tmp/test-recu.php
+- curl -u "ftp_user:ftp_password" ftp://localhost/
 
-These commands verify that the FTP server can list the web root and upload/download files successfully.
-If changing left side port, add *-p __port-number__*, if it's the right one, you have to change listen_port in vsftpd.conf
+This command will check the server's connection. If you have changed the FTP port (e.g.: 2021), write *"ftp://localhost:2021/"* instead.
+
+- Create a random file.
+- curl -u "ftp_user:ftp_password" -T your_file ftp://localhost/
+
+This command will transfer the corresponding file to your website. You can check it by re-taping *"curl -u "ftp_user:ftp_password" ftp://localhost/"*.
+
+If changing left side port, type *curl -u "ftp_user:ftp_password" ftp://localhost:__port-number__*, if it's the right one, you have to change listen_port in vsftpd.conf
 
 ### 5. Check WordPress and the database
 

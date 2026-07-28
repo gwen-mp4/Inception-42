@@ -1,5 +1,12 @@
 #!/bin/sh
 
+if [ -f "/run/secrets/ftp_password" ]; then
+    FTP_PASS=$(cat /run/secrets/ftp_password)
+else
+    echo "Error : ftp_password is nowhere to be found !"
+    exit 1
+fi
+
 if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
 
     mkdir -p /var/www/html

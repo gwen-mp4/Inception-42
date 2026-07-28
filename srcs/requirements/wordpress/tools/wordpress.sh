@@ -1,6 +1,16 @@
 #!/bin/sh
 set -x #Debug "docker logs <containerName>"
 
+if [ -f "/run/secrets/mariadb_user_password" ] && [ -f "/run/secrets/wp_admin_password" ] \
+    && [ -f "/run/secrets/wp_admin_user" ]; then
+    MYSQL_PASSWORD=$(cat /run/secrets/mariadb_user_password)
+    WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+    WP_ADMIN_USER=$(cat /run/secrets/wp_admin_user)
+else
+    echo "Error : One of the required secrets is nowhere to be found !"
+    exit 1
+fi
+
 until mariadb-admin ping \
 	-h "$MYSQL_HOSTNAME" \
 	-u "$MYSQL_USER" \
@@ -51,6 +61,7 @@ fi
 
 echo "Fixing permissions for www-data..."
 chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
 
 echo "Starting PHP-FPM..."
 exec /usr/sbin/php-fpm85 -F

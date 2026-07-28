@@ -1,4 +1,12 @@
-#!bin/sh
+#!/bin/sh
+
+if [ -f "/run/secrets/mariadb_user_password" ] && [ -f "/run/secrets/mariadb_root_password" ]; then
+    MYSQL_PASSWORD=$(cat /run/secrets/mariadb_user_password)
+    MYSQL_ROOT_PASSWORD=$(cat /run/secrets/mariadb_root_password)
+else
+    echo "Error : One of the required secrets is nowhere to be found !"
+    exit 1
+fi
 
 # Initializing the database (in /var/lib so it persists between each boot) if it doesn't exist
 # And run the user as the daemon mysql
