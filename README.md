@@ -36,7 +36,7 @@ Docker is used to isolate each service, simplify deployment, and make the enviro
 | Topic | Choice used here | Why |
 | --- | --- | --- |
 | Virtual Machines vs Docker | Docker | Docker is lighter, faster to start, and more suited for containerized micro-services. |
-| Secrets vs Environment Variables | Environment variables | The project uses values such as database passwords and FTP credentials from srcs/.env for convenience during development and local deployment. |
+| Secrets vs Environment Variables | Both | The project uses values such as database passwords and FTP credentials from srcs/.env and .secrets for convenience during development and local deployment. |
 | Docker Network vs Host Network | Docker network | Containers communicate through an internal bridge network, which is safer and cleaner than exposing everything directly on the host. |
 | Docker Volumes vs Bind Mounts | Bind mounts | The project uses bind mounts to keep data on the host filesystem at fixed paths for persistence and easy inspection. |
 
@@ -57,7 +57,7 @@ If you want to access the site locally using the configured domain, add the foll
 
 ### Configuration
 
-The main environment variables are stored in srcs/.env.
+The main environment variables are stored in srcs/.env and .secrets.
 
 Important values include:
 
@@ -95,7 +95,8 @@ This creates the required host directories and starts all containers.
 ## Structure of the repository
 
 - srcs/docker-compose.yaml: container orchestration for the whole stack
-- srcs/.env: runtime configuration and credentials
+- srcs/.env: runtime configuration and basic credentials
+- .secrets: sensible credentials
 - srcs/requirements/nginx/: Nginx configuration and TLS setup
 - srcs/requirements/wordpress/: WordPress installation and PHP-FPM setup
 - srcs/requirements/mariadb/: MariaDB initialization and database setup
