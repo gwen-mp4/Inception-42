@@ -29,7 +29,7 @@ The project expects a host mapping for the domain name used in the configuration
 
 ## 3. Environment configuration
 
-The main configuration values are stored in srcs/.env.
+The main configuration values are stored in srcs/.env (basic credentials) and .secrets (sensible credentials).
 
 Important variables include:
 
@@ -160,6 +160,6 @@ If a service does not start correctly:
 1. Check the container status with make status or docker compose ps.
 2. Review logs with make logs or docker compose logs <service>.
 3. Confirm that the host directories exist and have the expected permissions.
-4. Confirm that the values in srcs/.env are valid and consistent.
+4. Confirm that the values in srcs/.env and .secrets are valid and consistent.
 
 The WordPress bootstrap script waits for MariaDB to become available before doing the installation, which helps avoid startup races.

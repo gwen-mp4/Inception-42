@@ -50,7 +50,7 @@ If the domain name does not resolve on your machine, add it to /etc/hosts:
 
 ## 4. Locate and manage credentials
 
-The credentials are defined in srcs/.env.
+The credentials are defined in srcs/.env and .secrets.
 
 The most important values are:
 
@@ -60,7 +60,7 @@ The most important values are:
 - MariaDB root password: MYSQL_ROOT_PASSWORD
 - FTP access: FTP_USER and FTP_PASS
 
-If you need to change them, edit srcs/.env and restart the stack.
+If you need to change them, edit srcs/.env and .secrets and restart the stack.
 
 ## 5. Check that everything is running correctly
 
@@ -68,7 +68,7 @@ You can verify the project in several ways:
 
 - Run make status to see the containers.
 - Open the website in your browser.
-- Open the WordPress admin page and log in with the credentials from srcs/.env.
+- Open the WordPress admin page and log in with the credentials from srcs/.env or .secrets.
 - Open Adminer and cAdvisor to confirm the extra services are reachable.
 - Use make logs if you want to inspect errors.
 
@@ -83,7 +83,7 @@ Typical connection details:
 - Host: your Docker host or localhost
 - Port: 21
 - User: the value of FTP_USER in srcs/.env
-- Password: the value of FTP_PASS in srcs/.env
+- Password: the value of FTP_PASS in .secrets
 
 A client such as FileZilla or lftp can be used to connect.
 
